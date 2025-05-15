@@ -17,7 +17,7 @@ jobs:
     steps:
       # Checkout the repository
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Set up .NET SDK
       - name: Set up .NET
@@ -41,7 +41,7 @@ jobs:
 
       # Upload SBOM as artifact for inspection/download
       - name: Upload SBOM artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: roslyn-sbom
           path: roslyn-sbom.json
