@@ -38,12 +38,12 @@ jobs:
       # Generate SBOM (CycloneDX format, you can switch to spdx-json if preferred)
       - name: Generate SBOM using Syft
         run: |
-          syft dir:. --output cyclonedx-json > roslyn-sbom.json
+          syft dir:. --output cyclonedx-json > roslyn-sbom.spdx.json
 
       # Upload SBOM as artifact for inspection/download
       - name: Upload SBOM artifact
         uses: actions/upload-artifact@v4
         with:
           name: roslyn-sbom
-          path: roslyn-sbom.json
+          path: roslyn-sbom.spdx.json
 
