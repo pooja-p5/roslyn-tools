@@ -1,0 +1,48 @@
+name: Generate SBOM with Syft
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  generate-sbom:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Set up .NET SDK
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7.0'
+
+      # Install Syft
+      - name: Install Syft
+        run: |
+          curl -sSfL https://github.com/anchore/syft/releases/download/v0.47.0/syft-linux-amd64-v0.47.0.tar.gz | tar -xzv -C /usr/local/bin syft
+
+      # Restore NuGet packages (this is crucial for Syft to detect dependencies)
+      - name: Restore .NET dependencies
+        run: dotnet restore
+
+      # Generate SBOM (CycloneDX format, you can switch to spdx-json if preferred)
+      - name: Generate SBOM using Syft
+        run: |
+          syft dir:. --output cyclonedx-json > roslyn-sbom.json
+
+      # Upload SBOM as artifact for inspection/download
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: roslyn-sbom
+          path: roslyn-sbom.json
+
