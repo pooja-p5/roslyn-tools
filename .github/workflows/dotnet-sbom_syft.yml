@@ -28,7 +28,8 @@ jobs:
       # Install Syft
       - name: Install Syft
         run: |
-          curl -sSfL https://github.com/anchore/syft/releases/download/v0.47.0/syft-linux-amd64-v0.47.0.tar.gz | tar -xzv -C /usr/local/bin syft
+          #curl -sSfL https://github.com/anchore/syft/releases/download/v0.47.0/syft-linux-amd64-v0.47.0.tar.gz | tar -xzv -C /usr/local/bin syft
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
 
       # Restore NuGet packages (this is crucial for Syft to detect dependencies)
       - name: Restore .NET dependencies
